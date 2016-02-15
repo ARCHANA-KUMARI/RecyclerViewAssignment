@@ -47,7 +47,6 @@ public class ParserinInBackground extends AsyncTask<Void, Void, ArrayList<Produc
             return null;
         }
 
-
         return produCArrayList;
     }
 

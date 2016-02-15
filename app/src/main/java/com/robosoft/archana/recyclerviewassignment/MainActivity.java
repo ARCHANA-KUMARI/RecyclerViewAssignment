@@ -3,21 +3,16 @@ package com.robosoft.archana.recyclerviewassignment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.LruCache;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
-import android.widget.Toast;
 
 import com.robosoft.archana.recyclerviewassignment.Modal.Communicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.EditFragmentCommunicator;
@@ -27,7 +22,7 @@ import com.robosoft.archana.recyclerviewassignment.Modal.Notification;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 import com.robosoft.archana.recyclerviewassignment.Network.ParserinInBackground;
 import com.robosoft.archana.recyclerviewassignment.adapter.ProductListAdapter;
-import com.robosoft.archana.recyclerviewassignment.fragment.AddProductFragment;
+import com.robosoft.archana.recyclerviewassignment.fragment.ProductFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
     // Use 1/8th of the available memory for this memory cache.
     final int cacheSize = maxMemory / 8;
     private LruCache<String, Bitmap> mLrucCach = new LruCache<>(cacheSize);
-
+    //private ImageDownloader imageDownloader = new ImageDownloader(mLrucCach,)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.addmenu) {
-            AddProductFragment addProductFragment = new AddProductFragment();
+            ProductFragment addProductFragment = new ProductFragment();
+         //   addProductFragment.getView();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.container, addProductFragment);
@@ -108,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
         mProductListAdapter.notifyDataSetChanged();
     }
 
+    //for edit
     @Override
     public void toGoToFragment(Fragment fragment, int position, ArrayList<ProductList> editablelist) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -117,21 +114,15 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
             bundle.putSerializable("List", productArrayList);
         }
         bundle.putSerializable("EditableList", editablelist);
-        for (int i = 0; i < editablelist.size(); i++) {
-            ProductList productList = editablelist.get(i);
-
-        }
         fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.container, fragment).commit();
     }
 
     @Override
-    public void toSendEdittedList(ArrayList<ProductList> arrayList, int position) {
-        for (int i = 0; i < arrayList.size(); i++) {
-            ProductList productList = arrayList.get(i);
-        }
-        productArrayList = arrayList;
+    public void toSendEdittedList(int position) {
+        //TODO
+       // productArrayList = arrayList;
         Collections.sort(productArrayList, new NameComparator());
         mRecyclerView.setAdapter(mProductListAdapter);
         mProductListAdapter.notifyItemChanged(position);

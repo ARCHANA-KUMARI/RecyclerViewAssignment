@@ -19,12 +19,12 @@ public class ImageDownloader extends AsyncTask<Void, Void, Bitmap> {
 
 
     private LruCache<String, Bitmap> mMemoryCache;
-    private String image;
+    private String urladdress;
     private Bitmap mPic = null;
     private ImageView mImage;
 
-    public ImageDownloader(LruCache<String, Bitmap> lruCache, String image, ImageView mImage) {
-        this.image = image;
+    public ImageDownloader(LruCache<String, Bitmap> lruCache, String urladdress, ImageView mImage) {
+        this.urladdress = urladdress;
         this.mImage = mImage;
         this.mMemoryCache = lruCache;
 
@@ -33,11 +33,11 @@ public class ImageDownloader extends AsyncTask<Void, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(Void... params) {
         try {
-            URL url = new URL(image);
+            URL url = new URL(urladdress);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             InputStream inputStream = httpURLConnection.getInputStream();
             mPic = BitmapFactory.decodeStream(inputStream);
-            mMemoryCache.put(image, mPic);
+            mMemoryCache.put(urladdress, mPic);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
