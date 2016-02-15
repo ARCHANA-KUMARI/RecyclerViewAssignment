@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/leftlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/download" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="#F5A9F2"
+        android:id="@+id/rightlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/leftlayout"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Name"
+          />
+
+        <TextView
+            android:id="@+id/cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Name"
+         />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Name"
+          />
+
+    </LinearLayout>
+    <LinearLayout
+        android:background="#647ADC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/laythree"
+        android:layout_below="@id/rightlayout"
+        android:orientation="horizontal"
+        android:layout_toRightOf="@id/leftlayout">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:id="@+id/fupdate"
+            android:textStyle="bold"
+            android:textAllCaps="false"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:id="@+id/fdelete"
+            android:textStyle="bold"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+</RelativeLayout>
