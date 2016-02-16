@@ -5,8 +5,11 @@ import android.content.res.AssetManager;
 import android.os.AsyncTask;
 
 import com.robosoft.archana.recyclerviewassignment.Modal.JsonParser;
+import com.robosoft.archana.recyclerviewassignment.Modal.JsonParserUsingGson;
 import com.robosoft.archana.recyclerviewassignment.Modal.Notification;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,8 +28,8 @@ public class ParserinInBackground extends AsyncTask<Void, Void, ArrayList<Produc
         this.notification = (Notification) mContext;
     }
 
-    JsonParser jsonParser = new JsonParser(mContext);
-
+   //JsonParser jsonParser = new JsonParser(mContext);
+      JsonParserUsingGson jsonParserUsingGson = new JsonParserUsingGson(mContext);
     @Override
     protected ArrayList doInBackground(Void... params) {
 
@@ -41,10 +44,13 @@ public class ParserinInBackground extends AsyncTask<Void, Void, ArrayList<Produc
             inputStream.read(buffer);
             inputStream.close();
             json = new String(buffer, "UTF-8");
-            produCArrayList = jsonParser.parseJson(json);
+          //  produCArrayList = jsonParser.parseJson(json);
+            produCArrayList = jsonParserUsingGson.parseJsonUsingGson(json);
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         return produCArrayList;
