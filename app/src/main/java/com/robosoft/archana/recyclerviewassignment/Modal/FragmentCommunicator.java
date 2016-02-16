@@ -8,5 +8,5 @@ import java.util.ArrayList;
  * Created by archana on 12/2/16.
  */
 public interface FragmentCommunicator {
-    public void toGoToFragment(Fragment fragment,int position,ArrayList<ProductList> editableList);
+    public void onClickOfUpdateViewOfAdapter(Fragment fragment,int position,ArrayList<ProductList> editableList);
 }

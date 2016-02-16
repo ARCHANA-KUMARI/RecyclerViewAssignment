@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
         final ProductList productListClass = mProductList.get(position);
         holder.mTextName.setText(productListClass.getmName());
         holder.mTextCost.setText(String.valueOf(productListClass.getmCost()));
@@ -70,7 +72,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             public void onClick(View v) {
                 ProductFragment editFragment = new ProductFragment();
                 mEditableList.add(productListClass);
-                fragmentCommunicator.toGoToFragment(editFragment, position, mEditableList);
+                fragmentCommunicator.onClickOfUpdateViewOfAdapter(editFragment, position, mEditableList);
             }
         });
         holder.mButtonDelete.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +107,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         mPreviousPositon = position;
 
     }
-  private boolean isNetworkAvailable() {
+
+    private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

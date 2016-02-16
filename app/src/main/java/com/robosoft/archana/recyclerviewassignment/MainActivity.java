@@ -29,7 +29,7 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements Notification, Communicator, FragmentCommunicator, EditFragmentCommunicator {
 
-    private ArrayList<ProductList> productArrayList;
+    private ArrayList<ProductList> mProductArrayList;
     private RecyclerView mRecyclerView;
     private ProductListAdapter mProductListAdapter;
     private LinearLayoutManager mLinearLayoutManager;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
     // Use 1/8th of the available memory for this memory cache.
     final int cacheSize = maxMemory / 8;
     private LruCache<String, Bitmap> mLrucCach = new LruCache<>(cacheSize);
-    //private ImageDownloader imageDownloader = new ImageDownloader(mLrucCach,)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,23 +69,20 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
         //noinspection SimplifiableIfStatement
         if (id == R.id.addmenu) {
             ProductFragment addProductFragment = new ProductFragment();
-         //   addProductFragment.getView();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.container, addProductFragment);
             fragmentTransaction.commit();
             return true;
         }
-        if (id == R.id.editmenu) {
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void sendData(ArrayList<ProductList> productLists) {
-        productArrayList = productLists;
-        mProductListAdapter = new ProductListAdapter(mLrucCach, this, productLists);
+        mProductArrayList = productLists;
+        mProductListAdapter = new ProductListAdapter(mLrucCach, this, mProductArrayList);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mProductListAdapter);
@@ -93,25 +90,23 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
     }
 
     @Override
-    public void toCommunicate(ArrayList<ProductList> arrayList) {
-        //productArrayList = arrayList;
-
+    public void onClickOfAddButton(ArrayList<ProductList> arrayList) {
         if (arrayList.size() != 0) {
-            productArrayList.addAll(arrayList);
+            mProductArrayList.addAll(arrayList);
         }
-        Collections.sort(productArrayList, new NameComparator());
+        Collections.sort(mProductArrayList, new NameComparator());
         mRecyclerView.setAdapter(mProductListAdapter);
         mProductListAdapter.notifyDataSetChanged();
     }
 
     //for edit
     @Override
-    public void toGoToFragment(Fragment fragment, int position, ArrayList<ProductList> editablelist) {
+    public void onClickOfUpdateViewOfAdapter(Fragment fragment, int position, ArrayList<ProductList> editablelist) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Bundle bundle = new Bundle();
         bundle.putInt("Position", position);
-        if (productArrayList.size() != 0) {
-            bundle.putSerializable("List", productArrayList);
+        if (mProductArrayList.size() != 0) {
+            bundle.putSerializable("List", mProductArrayList);
         }
         bundle.putSerializable("EditableList", editablelist);
         fragment.setArguments(bundle);
@@ -120,10 +115,8 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
     }
 
     @Override
-    public void toSendEdittedList(int position) {
-        //TODO
-       // productArrayList = arrayList;
-        Collections.sort(productArrayList, new NameComparator());
+    public void onClickOfEditButton(int position) {
+        Collections.sort(mProductArrayList, new NameComparator());
         mRecyclerView.setAdapter(mProductListAdapter);
         mProductListAdapter.notifyItemChanged(position);
 

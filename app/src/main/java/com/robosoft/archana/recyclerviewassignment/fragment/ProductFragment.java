@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class ProductFragment extends Fragment {
 
     private ArrayList<ProductList> addedProductList = new ArrayList<>();
-    private Button mAddButton, mCancelButton;
+    private Button  mPerformButton, mCancelButton;
     private EditText mEditName, mEditCost, mEditImage, mEditDescription;
     private View mOneRow;
     Communicator communicator;
@@ -42,36 +42,16 @@ public class ProductFragment extends Fragment {
         mContext = container.getContext();
         communicator = (Communicator) mContext;
         editFragmentCommunicator = (EditFragmentCommunicator) mContext;
-        mOneRow = inflater.inflate(R.layout.fragment_add_product, container, false);
+        mOneRow = inflater.inflate(R.layout.fragment_product, container, false);
 
         mEditName = (EditText) mOneRow.findViewById(R.id.feditname);
         mEditCost = (EditText) mOneRow.findViewById(R.id.feditcost);
         mEditImage = (EditText) mOneRow.findViewById(R.id.feditimage);
         mEditDescription = (EditText) mOneRow.findViewById(R.id.feditdesription);
-
-        mAddButton = (Button) mOneRow.findViewById(R.id.fadd);
-
+        mPerformButton = (Button) mOneRow.findViewById(R.id.fadd);
         mCancelButton = (Button) mOneRow.findViewById(R.id.fcancel);
 
-
-        mAddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addedProductList.clear();
-                String name = mEditName.getText().toString();
-                int cost = Integer.parseInt(mEditCost.getText().toString());
-                String image = mEditImage.getText().toString();
-                String description = mEditDescription.getText().toString();
-                ProductList productList = new ProductList();
-                productList.setmName(name);
-                productList.setmCost(cost);
-                productList.setmImage(image);
-                productList.setmDesription(description);
-                addedProductList.add(productList);
-                communicator.toCommunicate(addedProductList);
-                getActivity().getSupportFragmentManager().beginTransaction().remove(ProductFragment.this).commit();
-            }
-        });
+        //Cancel button operation
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,13 +80,33 @@ public class ProductFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mCancelButton = (Button) mOneRow.findViewById(R.id.editfragcancel);
+
         Bundle bundle = getArguments();
         if(bundle==null){
-            mAddButton.setText("Add");
+            mPerformButton.setText("Add");
+            //Add operation
+            mPerformButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addedProductList.clear();
+                    String name = mEditName.getText().toString();
+                    int cost = Integer.parseInt(mEditCost.getText().toString());
+                    String image = mEditImage.getText().toString();
+                    String description = mEditDescription.getText().toString();
+                    ProductList productList = new ProductList();
+                    productList.setmName(name);
+                    productList.setmCost(cost);
+                    productList.setmImage(image);
+                    productList.setmDesription(description);
+                    addedProductList.add(productList);
+                    communicator.onClickOfAddButton(addedProductList);
+                    getActivity().getSupportFragmentManager().beginTransaction().remove(ProductFragment.this).commit();
+                }
+            });
         }
         else {
-            mAddButton.setText("Update");
+            //Edit operation
+            mPerformButton.setText("Update");
             final int position = bundle.getInt("Position");
             final ArrayList<ProductList> editablelist = (ArrayList<ProductList>) bundle.getSerializable("EditableList");
             for(int i = 0;i < editablelist.size();i++){
@@ -120,7 +120,7 @@ public class ProductFragment extends Fragment {
                 mEditDescription.setText(description);
             }
             final ArrayList<ProductList> arrayList = (ArrayList<ProductList>) bundle.getSerializable("List");
-            mAddButton.setOnClickListener(new View.OnClickListener() {
+            mPerformButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ProductList productList = arrayList.get(position);
@@ -133,7 +133,7 @@ public class ProductFragment extends Fragment {
                     productList.setmImage(editedimage);
                     productList.setmDesription(editeddescription);
                     arrayList.set(position, productList);
-                    editFragmentCommunicator.toSendEdittedList(position);
+                    editFragmentCommunicator.onClickOfEditButton(position);
                     getActivity().getSupportFragmentManager().beginTransaction().remove(ProductFragment.this).commit();
 
                 }
