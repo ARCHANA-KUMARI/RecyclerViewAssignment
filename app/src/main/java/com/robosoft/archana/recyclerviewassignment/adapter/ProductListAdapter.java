@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.robosoft.archana.recyclerviewassignment.Modal.FragmentCommunicator;
+import com.robosoft.archana.recyclerviewassignment.Modal.AdapterViewFragmentCommunicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 import com.robosoft.archana.recyclerviewassignment.Network.ImageDownloader;
 import com.robosoft.archana.recyclerviewassignment.R;
@@ -34,14 +33,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private ArrayList<ProductList> mEditableList = new ArrayList<>();
     private View mOneRow;
     private int mPreviousPositon = 0;
-    FragmentCommunicator fragmentCommunicator;
+    AdapterViewFragmentCommunicator fragmentCommunicator;
     private LruCache<String, Bitmap> mLrucache;
 
     public ProductListAdapter(LruCache<String, Bitmap> lruCache, Context mContext, ArrayList<ProductList> mProductList) {
         this.mLrucache = lruCache;
         this.mContext = mContext;
         this.mProductList = mProductList;
-        fragmentCommunicator = (FragmentCommunicator) mContext;
+        fragmentCommunicator = (AdapterViewFragmentCommunicator) mContext;
 
     }
 

@@ -16,7 +16,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.robosoft.archana.recyclerviewassignment.Modal.Communicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.EditFragmentCommunicator;
-import com.robosoft.archana.recyclerviewassignment.Modal.FragmentCommunicator;
+import com.robosoft.archana.recyclerviewassignment.Modal.AdapterViewFragmentCommunicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.NameComparator;
 import com.robosoft.archana.recyclerviewassignment.Modal.Notification;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
@@ -27,7 +27,7 @@ import com.robosoft.archana.recyclerviewassignment.fragment.ProductFragment;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MainActivity extends AppCompatActivity implements Notification, Communicator, FragmentCommunicator, EditFragmentCommunicator {
+public class MainActivity extends AppCompatActivity implements Notification, Communicator, AdapterViewFragmentCommunicator, EditFragmentCommunicator {
 
     private ArrayList<ProductList> mProductArrayList;
     private RecyclerView mRecyclerView;
