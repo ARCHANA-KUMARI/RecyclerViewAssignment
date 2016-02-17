@@ -5,7 +5,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.robosoft.archana.recyclerviewassignment.Modal.Message;
+import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 import com.robosoft.archana.recyclerviewassignment.adapter.DatabaseAdapter;
+
+import java.util.ArrayList;
 
 /**
  * Created by archana on 17/2/16.
@@ -16,6 +19,8 @@ public class DataInsertAsynTask extends AsyncTask<Void,Void,Long> {
     private int mCost;
     DatabaseAdapter databaseAdapter;
     private Context mContext;
+    private ArrayList<ProductList> mCurrentList = new ArrayList<>();
+
     public DataInsertAsynTask(Context context,String mName, String mImageurl, String mDescription, int mCost) {
         this.mContext = context;
         this.mName = mName;
@@ -23,6 +28,7 @@ public class DataInsertAsynTask extends AsyncTask<Void,Void,Long> {
         this.mDescription = mDescription;
         this.mCost = mCost;
         databaseAdapter = new DatabaseAdapter(mContext);
+
     }
 
     @Override
@@ -41,6 +47,6 @@ public class DataInsertAsynTask extends AsyncTask<Void,Void,Long> {
         } else {
             Message.message(mContext, "Data is inserted successfully");
         }
-        //return id;
+
     }
 }

@@ -3,7 +3,6 @@ package com.robosoft.archana.recyclerviewassignment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,11 +18,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 
 import com.robosoft.archana.recyclerviewassignment.DataBaseHelper.DataFetchAsynTask;
-import com.robosoft.archana.recyclerviewassignment.Modal.Communicator;
-import com.robosoft.archana.recyclerviewassignment.Modal.EditFragmentCommunicator;
-import com.robosoft.archana.recyclerviewassignment.Modal.AdapterViewFragmentCommunicator;
+import com.robosoft.archana.recyclerviewassignment.Interfaces.Communicator;
+import com.robosoft.archana.recyclerviewassignment.Interfaces.EditFragmentCommunicator;
+import com.robosoft.archana.recyclerviewassignment.Interfaces.AdapterViewFragmentCommunicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.NameComparator;
-import com.robosoft.archana.recyclerviewassignment.Modal.Notification;
+import com.robosoft.archana.recyclerviewassignment.Interfaces.Notification;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 import com.robosoft.archana.recyclerviewassignment.Network.ParserinInBackground;
 import com.robosoft.archana.recyclerviewassignment.adapter.DatabaseAdapter;
@@ -35,7 +34,7 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements Notification, Communicator, AdapterViewFragmentCommunicator, EditFragmentCommunicator {
 
-    private ArrayList<ProductList> mProductArrayList;
+    private ArrayList<ProductList> mProductArrayList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private ProductListAdapter mProductListAdapter;
     private LinearLayoutManager mLinearLayoutManager;
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
     private SharedPreferences mSharedPreference;
     private boolean mFirstTime;
     private DatabaseAdapter mDatabaseAdapter;
+
   //  private SQLiteDatabase mSQlitedatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDatabaseAdapter = new DatabaseAdapter(this);
+
        // mSQlitedatabase = mDatabaseAdapter.databaseHelper.getReadableDatabase();
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -93,8 +94,17 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.addmenu) {
+
             ProductFragment addProductFragment = new ProductFragment();
+
+        /*    sendListToFragment = (SendListToFragment) addProductFragment;
+            if(sendListToFragment!=null){
+                sendListToFragment.onClickOfAddMenu(mProductArrayList);
+            }*/
+
+
             FragmentManager fragmentManager = getSupportFragmentManager();
+
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.container, addProductFragment);
             fragmentTransaction.commit();

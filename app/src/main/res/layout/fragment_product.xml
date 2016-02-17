@@ -71,6 +71,7 @@
             android:id="@+id/feditimage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textWebEmailAddress"
             android:hint="Enter image url" />
 
         <EditText

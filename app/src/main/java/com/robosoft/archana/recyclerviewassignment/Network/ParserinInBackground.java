@@ -3,12 +3,9 @@ package com.robosoft.archana.recyclerviewassignment.Network;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.robosoft.archana.recyclerviewassignment.Modal.JsonParser;
 import com.robosoft.archana.recyclerviewassignment.Modal.JsonParserUsingGson;
-import com.robosoft.archana.recyclerviewassignment.Modal.Message;
-import com.robosoft.archana.recyclerviewassignment.Modal.Notification;
+import com.robosoft.archana.recyclerviewassignment.Interfaces.Notification;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 import com.robosoft.archana.recyclerviewassignment.adapter.DatabaseAdapter;
 

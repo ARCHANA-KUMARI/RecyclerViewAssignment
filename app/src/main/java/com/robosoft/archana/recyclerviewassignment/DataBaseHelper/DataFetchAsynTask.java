@@ -3,7 +3,7 @@ package com.robosoft.archana.recyclerviewassignment.DataBaseHelper;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.robosoft.archana.recyclerviewassignment.Modal.Notification;
+import com.robosoft.archana.recyclerviewassignment.Interfaces.Notification;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 import com.robosoft.archana.recyclerviewassignment.adapter.DatabaseAdapter;
 

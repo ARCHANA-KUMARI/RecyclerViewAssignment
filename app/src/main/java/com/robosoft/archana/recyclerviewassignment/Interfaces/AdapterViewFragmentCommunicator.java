@@ -1,6 +1,8 @@
-package com.robosoft.archana.recyclerviewassignment.Modal;
+package com.robosoft.archana.recyclerviewassignment.Interfaces;
 
 import android.support.v4.app.Fragment;
+
+import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 
 import java.util.ArrayList;
 

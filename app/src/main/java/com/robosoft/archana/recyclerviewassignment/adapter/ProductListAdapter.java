@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.robosoft.archana.recyclerviewassignment.AnimUtils.AnimationUtils;
-import com.robosoft.archana.recyclerviewassignment.Modal.AdapterViewFragmentCommunicator;
+import com.robosoft.archana.recyclerviewassignment.Interfaces.AdapterViewFragmentCommunicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.Message;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 import com.robosoft.archana.recyclerviewassignment.Network.ImageDownloader;
