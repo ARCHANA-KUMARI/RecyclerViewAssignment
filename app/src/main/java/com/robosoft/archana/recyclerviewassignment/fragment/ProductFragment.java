@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.robosoft.archana.recyclerviewassignment.DataBaseHelper.DataInsertAsynTask;
 import com.robosoft.archana.recyclerviewassignment.Modal.Communicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.EditFragmentCommunicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.Message;
@@ -103,12 +104,13 @@ public class ProductFragment extends Fragment implements Notification{
                     int cost = Integer.parseInt(mEditCost.getText().toString());
                     String image = mEditImage.getText().toString();
                     String description = mEditDescription.getText().toString();
-                    long id = databaseAdapter.insertData(name,cost,image,description);
+                    new DataInsertAsynTask(mContext,name,image,description,cost).execute();
+                    /*long id = databaseAdapter.insertData(name,cost,image,description);
                     if (id < 0) {
                         Message.message(mContext, "Unsuccessfully");
                     } else {
                         Message.message(mContext, "Data is inserted successfully");
-                    }
+                    }*/
                     communicator.onClickOfAddButton(addedProductList);
                     getActivity().getSupportFragmentManager().beginTransaction().remove(ProductFragment.this).commit();
                 }

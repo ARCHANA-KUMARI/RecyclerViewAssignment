@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
     private SharedPreferences mSharedPreference;
     private boolean mFirstTime;
     private DatabaseAdapter mDatabaseAdapter;
-    private SQLiteDatabase mSQlitedatabase;
+  //  private SQLiteDatabase mSQlitedatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDatabaseAdapter = new DatabaseAdapter(this);
-        mSQlitedatabase = mDatabaseAdapter.databaseHelper.getReadableDatabase();
+       // mSQlitedatabase = mDatabaseAdapter.databaseHelper.getReadableDatabase();
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mLinearLayoutManager = new LinearLayoutManager(this);
-       mSharedPreference = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        mSharedPreference = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         mFirstTime = mSharedPreference.getBoolean(FIRSTTIME,true);
         if(mFirstTime){
 
@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
 
     @Override
     public void sendData(ArrayList<ProductList> productLists) {
-        Log.i("Helllo","I am in sendData Callback in MainActivity******"+productLists.size());
         mProductArrayList = productLists;
         mProductListAdapter = new ProductListAdapter(mLrucCach, this, mProductArrayList);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -117,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
 
     @Override
     public void onClickOfAddButton(ArrayList<ProductList> arrayList) {
+       Log.i("Hello","List size is"+arrayList.size());
         if (arrayList.size() != 0) {
             mProductArrayList.addAll(arrayList);
         }
