@@ -12,6 +12,6 @@ public class Message {
     public static String TAG = "Hello";
     public static void message(Context context ,String message){
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-      Log.i("Hello","THis message"+message);
+        Log.i(TAG,"THis message"+message);
     }
 }

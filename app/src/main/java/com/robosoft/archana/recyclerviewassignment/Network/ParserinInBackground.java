@@ -34,7 +34,7 @@ public class ParserinInBackground extends AsyncTask<Void, Void, ArrayList<Produc
         databaseAdapter = new DatabaseAdapter(mContext);
     }
 
-   //JsonParser jsonParser = new JsonParser(mContext);
+     //JsonParser jsonParser = new JsonParser(mContext);
       JsonParserUsingGson jsonParserUsingGson = new JsonParserUsingGson(mContext);
     @Override
     protected ArrayList doInBackground(Void... params) {
@@ -54,8 +54,7 @@ public class ParserinInBackground extends AsyncTask<Void, Void, ArrayList<Produc
             produCArrayList = jsonParserUsingGson.parseJsonUsingGson(json);
             for(int i = 0;i<produCArrayList.size();i++){
                 mProductList = produCArrayList.get(i);
-
-               id = databaseAdapter.insertData(mProductList.getmName(),mProductList.getmCost(),mProductList.getmImage(),mProductList.getmDesription());
+                id = databaseAdapter.insertData(mProductList.getmName(),mProductList.getmCost(),mProductList.getmImage(),mProductList.getmDesription());
             }
 
         } catch (IOException ex) {
@@ -71,10 +70,6 @@ public class ParserinInBackground extends AsyncTask<Void, Void, ArrayList<Produc
     @Override
     protected void onPostExecute(ArrayList<ProductList> productLists) {
         super.onPostExecute(productLists);
-        if(id>0){
-            Message.message(mContext,"Data is inserted successfully");
-            Log.i("Hello", "No of rows is" + id);
-        }
         notification.sendData(productLists);
     }
 }

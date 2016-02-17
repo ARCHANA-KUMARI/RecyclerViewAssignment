@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 
+import com.robosoft.archana.recyclerviewassignment.DataBaseHelper.DataFetchAsynTask;
 import com.robosoft.archana.recyclerviewassignment.Modal.Communicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.EditFragmentCommunicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.AdapterViewFragmentCommunicator;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
     private String MyPREFERENCES = "mypreference";
     private static final String FIRSTTIME = "FirtstTime";
     private SharedPreferences mSharedPreference;
-    private boolean mFirst;
+    private boolean mFirstTime;
     private DatabaseAdapter mDatabaseAdapter;
     private SQLiteDatabase mSQlitedatabase;
     @Override
@@ -59,28 +60,21 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mLinearLayoutManager = new LinearLayoutManager(this);
        mSharedPreference = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-         boolean check = mSharedPreference.getBoolean("Yes",true);
-        Log.i("Hello","Check is"+check);
-        if( check){
-          //  Log.i("Hello","I am in if block"+check);
+        mFirstTime = mSharedPreference.getBoolean(FIRSTTIME,true);
+        if(mFirstTime){
+
             ParserinInBackground parserinInBackground = new ParserinInBackground(this);
             parserinInBackground.execute();
-       }
-        /*else
-        {*/
-            Log.i("Hello","I am in else block"+check);
+         }
+
             SharedPreferences.Editor editor = mSharedPreference.edit();
-
-            editor.putBoolean("Yes",false);
+            mFirstTime = false;
+            editor.putBoolean(FIRSTTIME,mFirstTime);
             editor.commit();
-       // }
 
-        mProductArrayList = mDatabaseAdapter.getAllData();
-        Log.i("Hello","I am in sendDataArray"+mProductArrayList.size());
-        mProductListAdapter = new ProductListAdapter(mLrucCach, this, mProductArrayList);
-        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.setAdapter(mProductListAdapter);
+        DataFetchAsynTask dataFetchAsynTask = new DataFetchAsynTask(this,mDatabaseAdapter);
+        dataFetchAsynTask.execute();
+
     }
 
     @Override
@@ -112,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
 
     @Override
     public void sendData(ArrayList<ProductList> productLists) {
-        mProductArrayList = mDatabaseAdapter.getAllData();
-        Log.i("Hello","I am in sendDataArray"+mProductArrayList.size());
+        Log.i("Helllo","I am in sendData Callback in MainActivity******"+productLists.size());
+        mProductArrayList = productLists;
         mProductListAdapter = new ProductListAdapter(mLrucCach, this, mProductArrayList);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);

@@ -38,6 +38,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private ArrayList<ProductList> mEditableList = new ArrayList<>();
     private View mOneRow;
     private int mPreviousPositon = 0;
+
     AdapterViewFragmentCommunicator fragmentCommunicator;
     private LruCache<String, Bitmap> mLrucache;
     private DatabaseAdapter mDatabaseAdapter;
@@ -96,15 +97,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Delete opeartaion
-                        ProductList productList = mProductList.get(position);
-
+                     //   ProductList productList = mProductList.get(position);
                         int count = 0;
                         if (mCursor.moveToFirst()) {
-                            Log.i("HI", "i am in onClick methood");
+
                             do {
 
                                 if (count == position) {
-                                    // Log.i("HI ","I AND POSITION BOTH ARE SAME"+i+"AND"+position);
                                     int uid = mCursor.getInt(0);
                                     int noOfRows = mDatabaseAdapter.deleteRow(uid,mSQliteDatabase);
                                     mProductList.remove(position);
@@ -115,7 +114,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                                     } else {
                                         Message.message(mContext, "Deleted Successfully");
                                     }
-                                    Log.i("Hello", "Total no of rows deletes is" + noOfRows);
                                 }
                                 count++;
                             } while (mCursor.moveToNext());
