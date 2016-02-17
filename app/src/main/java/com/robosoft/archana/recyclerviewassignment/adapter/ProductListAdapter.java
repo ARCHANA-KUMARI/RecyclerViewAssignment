@@ -43,7 +43,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private LruCache<String, Bitmap> mLrucache;
     private DatabaseAdapter mDatabaseAdapter;
     private SQLiteDatabase mSQliteDatabase;
-    private Cursor mCursor;
+
     public ProductListAdapter(LruCache<String, Bitmap> lruCache, Context mContext, ArrayList<ProductList> mProductList) {
         this.mLrucache = lruCache;
         this.mContext = mContext;
@@ -51,11 +51,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         fragmentCommunicator = (AdapterViewFragmentCommunicator) mContext;
         mDatabaseAdapter = new DatabaseAdapter(mContext);
         mSQliteDatabase = mDatabaseAdapter.databaseHelper.getReadableDatabase();
-        mCursor = mDatabaseAdapter.getCursor(mSQliteDatabase);
     }
-
-
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -96,17 +92,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Delete opeartaion
-                     //   ProductList productList = mProductList.get(position);
-                        int count = 0;
-                        if (mCursor.moveToFirst()) {
 
-                            do {
-
-                                if (count == position) {
-                                    int uid = mCursor.getInt(0);
-                                    int noOfRows = mDatabaseAdapter.deleteRow(uid,mSQliteDatabase);
-                                    mProductList.remove(position);
+                             int noOfRows = mDatabaseAdapter.deleteRow(mProductList.get(position),mSQliteDatabase);
+                             mProductList.remove(position);
                                     notifyItemRemoved(position);
                                     notifyItemRangeChanged(position, getItemCount());
                                     if (noOfRows <= 0) {
@@ -114,12 +102,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                                     } else {
                                         Message.message(mContext, "Deleted Successfully");
                                     }
-                                }
-                                count++;
-                            } while (mCursor.moveToNext());
 
-                        }
-                        }
+                             }
                 });
                 builder.setNegativeButton("No", null);
                 AlertDialog alertDialog = builder.create();

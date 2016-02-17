@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 
 import java.util.ArrayList;
@@ -45,7 +47,11 @@ public class DatabaseAdapter {
         mCursor = sqLiteDatabase.query(DatabaseHelper.TABLE_NAME, colums, null, null, null, null, null);
         if (mCursor.moveToFirst()) {
             while (mCursor.moveToNext()) {
+
                 mProductList = new ProductList();
+                int id = mCursor.getInt(0);
+                Log.i("Hello", "Id is" + id);
+                mProductList.setmId(id);
                 String name = mCursor.getString(1);
                 mProductList.setmName(name);
                 int cost = mCursor.getInt(2);
@@ -61,8 +67,8 @@ public class DatabaseAdapter {
         return mList;
     }
 
-    public int deleteRow(int id,SQLiteDatabase sqLiteDatabase){
-        int noOfRows = sqLiteDatabase.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper.PRODUCT_ID + "="+id,null);
+    public int deleteRow(ProductList productListObject,SQLiteDatabase sqLiteDatabase){
+        int noOfRows = sqLiteDatabase.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper.PRODUCT_ID + "="+productListObject.getmId(),null);
         return noOfRows;
     }
 
@@ -78,13 +84,6 @@ public class DatabaseAdapter {
         String whereArgs[] = {oldProductName};
         int noOfRows = sqLiteDatabase.update(DatabaseHelper.TABLE_NAME, contentValues, DatabaseHelper.PRODUCT_NAME+ " =? ", whereArgs);
         return noOfRows;
-    }
-
-    public Cursor  getCursor(SQLiteDatabase sqLiteDatabase){
-
-        String columns[] = {DatabaseHelper.PRODUCT_ID,DatabaseHelper.PRODUCT_NAME,DatabaseHelper.PRODUCT_COST,DatabaseHelper.PRODUCT_URL,DatabaseHelper.PRODUCT_DESCRIPTION};
-        Cursor cursor =  sqLiteDatabase.query(DatabaseHelper.TABLE_NAME, columns, null, null, null, null, null);
-        return  cursor;
     }
 
     static public class DatabaseHelper extends SQLiteOpenHelper {
