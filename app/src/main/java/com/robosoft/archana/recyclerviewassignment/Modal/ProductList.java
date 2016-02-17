@@ -17,6 +17,16 @@ public class ProductList implements Serializable {
     private String mImage;
     @SerializedName("description")
     private String mDesription;
+
+    public int getmId() {
+        return mId;
+    }
+
+    public void setmId(int mId) {
+        this.mId = mId;
+    }
+
+    private int mId;
     public String getmName() {
         return mName;
     }
