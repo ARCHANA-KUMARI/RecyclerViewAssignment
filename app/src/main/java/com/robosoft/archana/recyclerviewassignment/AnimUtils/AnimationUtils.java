@@ -1,4 +1,4 @@
-package com.robosoft.archana.recyclerviewassignment.Modal;
+package com.robosoft.archana.recyclerviewassignment.AnimUtils;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

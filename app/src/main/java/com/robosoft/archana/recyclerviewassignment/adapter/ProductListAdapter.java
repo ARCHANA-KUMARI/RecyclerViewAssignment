@@ -2,14 +2,12 @@ package com.robosoft.archana.recyclerviewassignment.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.robosoft.archana.recyclerviewassignment.AnimUtils.AnimationUtils;
 import com.robosoft.archana.recyclerviewassignment.Modal.AdapterViewFragmentCommunicator;
 import com.robosoft.archana.recyclerviewassignment.Modal.Message;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
@@ -25,7 +24,6 @@ import com.robosoft.archana.recyclerviewassignment.Network.ImageDownloader;
 import com.robosoft.archana.recyclerviewassignment.R;
 import com.robosoft.archana.recyclerviewassignment.fragment.ProductFragment;
 
-import java.math.MathContext;
 import java.util.ArrayList;
 
 /**
@@ -113,9 +111,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     //Custome animation
         if (position > mPreviousPositon) {
-            com.robosoft.archana.recyclerviewassignment.Modal.AnimationUtils.animatie(holder, true);
+            AnimationUtils.animatie(holder, true);
         } else {
-            com.robosoft.archana.recyclerviewassignment.Modal.AnimationUtils.animatie(holder, true);
+            AnimationUtils.animatie(holder, true);
         }
         mPreviousPositon = position;
 
