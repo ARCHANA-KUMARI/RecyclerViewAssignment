@@ -3,11 +3,14 @@ package com.robosoft.archana.recyclerviewassignment.Network;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.robosoft.archana.recyclerviewassignment.Modal.JsonParser;
 import com.robosoft.archana.recyclerviewassignment.Modal.JsonParserUsingGson;
+import com.robosoft.archana.recyclerviewassignment.Modal.Message;
 import com.robosoft.archana.recyclerviewassignment.Modal.Notification;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
+import com.robosoft.archana.recyclerviewassignment.adapter.DatabaseAdapter;
 
 import org.json.JSONException;
 
@@ -22,10 +25,13 @@ public class ParserinInBackground extends AsyncTask<Void, Void, ArrayList<Produc
     private Context mContext;
     private ArrayList<ProductList> produCArrayList = new ArrayList<>();
     Notification notification;
-
+    private ProductList mProductList;
+    DatabaseAdapter databaseAdapter;
+    long id;
     public ParserinInBackground(Context mContext) {
         this.mContext = mContext;
         this.notification = (Notification) mContext;
+        databaseAdapter = new DatabaseAdapter(mContext);
     }
 
    //JsonParser jsonParser = new JsonParser(mContext);
@@ -46,6 +52,12 @@ public class ParserinInBackground extends AsyncTask<Void, Void, ArrayList<Produc
             json = new String(buffer, "UTF-8");
           //  produCArrayList = jsonParser.parseJson(json);
             produCArrayList = jsonParserUsingGson.parseJsonUsingGson(json);
+            for(int i = 0;i<produCArrayList.size();i++){
+                mProductList = produCArrayList.get(i);
+
+               id = databaseAdapter.insertData(mProductList.getmName(),mProductList.getmCost(),mProductList.getmImage(),mProductList.getmDesription());
+            }
+
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
@@ -59,6 +71,10 @@ public class ParserinInBackground extends AsyncTask<Void, Void, ArrayList<Produc
     @Override
     protected void onPostExecute(ArrayList<ProductList> productLists) {
         super.onPostExecute(productLists);
+        if(id>0){
+            Message.message(mContext,"Data is inserted successfully");
+            Log.i("Hello", "No of rows is" + id);
+        }
         notification.sendData(productLists);
     }
 }

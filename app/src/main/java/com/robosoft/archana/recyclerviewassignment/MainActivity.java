@@ -1,6 +1,9 @@
 package com.robosoft.archana.recyclerviewassignment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.LruCache;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +25,7 @@ import com.robosoft.archana.recyclerviewassignment.Modal.NameComparator;
 import com.robosoft.archana.recyclerviewassignment.Modal.Notification;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 import com.robosoft.archana.recyclerviewassignment.Network.ParserinInBackground;
+import com.robosoft.archana.recyclerviewassignment.adapter.DatabaseAdapter;
 import com.robosoft.archana.recyclerviewassignment.adapter.ProductListAdapter;
 import com.robosoft.archana.recyclerviewassignment.fragment.ProductFragment;
 
@@ -37,19 +42,45 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
     // Use 1/8th of the available memory for this memory cache.
     final int cacheSize = maxMemory / 8;
     private LruCache<String, Bitmap> mLrucCach = new LruCache<>(cacheSize);
-
+    private String MyPREFERENCES = "mypreference";
+    private static final String FIRSTTIME = "FirtstTime";
+    private SharedPreferences mSharedPreference;
+    private boolean mFirst;
+    private DatabaseAdapter mDatabaseAdapter;
+    private SQLiteDatabase mSQlitedatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mDatabaseAdapter = new DatabaseAdapter(this);
+        mSQlitedatabase = mDatabaseAdapter.databaseHelper.getReadableDatabase();
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mLinearLayoutManager = new LinearLayoutManager(this);
-        ParserinInBackground parserinInBackground = new ParserinInBackground(this);
-        parserinInBackground.execute();
+       mSharedPreference = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+         boolean check = mSharedPreference.getBoolean("Yes",true);
+        Log.i("Hello","Check is"+check);
+        if( check){
+          //  Log.i("Hello","I am in if block"+check);
+            ParserinInBackground parserinInBackground = new ParserinInBackground(this);
+            parserinInBackground.execute();
+       }
+        /*else
+        {*/
+            Log.i("Hello","I am in else block"+check);
+            SharedPreferences.Editor editor = mSharedPreference.edit();
 
+            editor.putBoolean("Yes",false);
+            editor.commit();
+       // }
 
+        mProductArrayList = mDatabaseAdapter.getAllData();
+        Log.i("Hello","I am in sendDataArray"+mProductArrayList.size());
+        mProductListAdapter = new ProductListAdapter(mLrucCach, this, mProductArrayList);
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setAdapter(mProductListAdapter);
     }
 
     @Override
@@ -81,7 +112,8 @@ public class MainActivity extends AppCompatActivity implements Notification, Com
 
     @Override
     public void sendData(ArrayList<ProductList> productLists) {
-        mProductArrayList = productLists;
+        mProductArrayList = mDatabaseAdapter.getAllData();
+        Log.i("Hello","I am in sendDataArray"+mProductArrayList.size());
         mProductListAdapter = new ProductListAdapter(mLrucCach, this, mProductArrayList);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
