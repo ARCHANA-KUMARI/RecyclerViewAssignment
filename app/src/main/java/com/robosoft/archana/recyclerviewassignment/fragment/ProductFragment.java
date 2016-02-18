@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductFragment extends Fragment implements Serializable{
+public class ProductFragment extends Fragment{
 
     private ArrayList<ProductList> addedProductList = new ArrayList<>();
     private Button  mPerformButton, mCancelButton;

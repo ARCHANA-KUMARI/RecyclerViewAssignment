@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Created by archana on 17/2/16.
  */
-public class UrlValidation implements Serializable {
+public class UrlValidation {
 
    public static void validUrl(final EditText editurl){
        editurl.addTextChangedListener(new TextWatcher() {
