@@ -33,14 +33,12 @@ public class DataInsertAsynTask extends AsyncTask<Void,Void,Long> {
 
     @Override
     protected Long doInBackground(Void... params) {
-
         long id = databaseAdapter.insertData(mName,mCost,mImageurl,mDescription);
         return  id;
     }
 
     @Override
     protected void onPostExecute(Long aLong) {
-        Log.i("Hello", "Long is " + aLong);
         super.onPostExecute(aLong);
         if (aLong.intValue() < 0) {
             Message.message(mContext, "Unsuccessfully");

@@ -62,8 +62,7 @@ public class ProductFragment extends Fragment implements Serializable{
         Validation.checkValid(mEditImage);
         UrlValidation.validUrl(mEditImage);
         mEditDescription = (EditText) mOneRow.findViewById(R.id.feditdesription);
-
-       Validation.checkValid(mEditDescription);
+        Validation.checkValid(mEditDescription);
         mPerformButton = (Button) mOneRow.findViewById(R.id.fadd);
         mCancelButton = (Button) mOneRow.findViewById(R.id.fcancel);
 
@@ -105,8 +104,8 @@ public class ProductFragment extends Fragment implements Serializable{
             mPerformButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //addedProductList.clear();
 
+                    addedProductList.clear();
                     String name = mEditName.getText().toString();
                     int cost = Integer.parseInt(mEditCost.getText().toString());
                     String image = mEditImage.getText().toString();
@@ -118,7 +117,6 @@ public class ProductFragment extends Fragment implements Serializable{
                     productList.setmDesription(description);
                     new DataInsertAsynTask(mContext,name,image,description,cost).execute();
                     addedProductList.add(productList);
-                    Log.i("Hello","List size in Fragment"+addedProductList.size());
                     communicator.onClickOfAddButton(addedProductList);
                     getActivity().getSupportFragmentManager().beginTransaction().remove(ProductFragment.this).commit();
                 }
