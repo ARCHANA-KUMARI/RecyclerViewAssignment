@@ -1,15 +1,32 @@
 package com.robosoft.archana.recyclerviewassignment.Modal;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
  * Created by archanakumari on 11/2/16.
  */
 public class ProductList implements Serializable {
-    private String mName;
-    private int mCost;
-    private String mImage;
 
+    @SerializedName("name")
+    private String mName;
+    @SerializedName("cost")
+    private int mCost;
+    @SerializedName("image")
+    private String mImage;
+    @SerializedName("description")
+    private String mDesription;
+
+    public int getmId() {
+        return mId;
+    }
+
+    public void setmId(int mId) {
+        this.mId = mId;
+    }
+
+    private int mId;
     public String getmName() {
         return mName;
     }
@@ -42,6 +59,7 @@ public class ProductList implements Serializable {
         this.mDesription = mDesription;
     }
 
-    private String mDesription;
+
 }
+
 

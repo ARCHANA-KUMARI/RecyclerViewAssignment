@@ -6,10 +6,6 @@
         android:id="@+id/addmenu"
         android:title="Add"
         android:orderInCategory="100"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/editmenu"
-        android:title="Edit"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="always"
+    />
 </menu>

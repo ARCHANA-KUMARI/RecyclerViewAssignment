@@ -1,4 +1,6 @@
-package com.robosoft.archana.recyclerviewassignment.Modal;
+package com.robosoft.archana.recyclerviewassignment.Interfaces;
+
+import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 
 import java.util.ArrayList;
 

@@ -2,28 +2,27 @@ package com.robosoft.archana.recyclerviewassignment.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.robosoft.archana.recyclerviewassignment.Modal.FragmentCommunicator;
+import com.robosoft.archana.recyclerviewassignment.AnimUtils.AnimationUtils;
+import com.robosoft.archana.recyclerviewassignment.Interfaces.AdapterViewFragmentCommunicator;
+import com.robosoft.archana.recyclerviewassignment.Modal.Message;
 import com.robosoft.archana.recyclerviewassignment.Modal.ProductList;
 import com.robosoft.archana.recyclerviewassignment.Network.ImageDownloader;
 import com.robosoft.archana.recyclerviewassignment.R;
-import com.robosoft.archana.recyclerviewassignment.fragment.EditFragment;
+import com.robosoft.archana.recyclerviewassignment.fragment.ProductFragment;
 
 import java.util.ArrayList;
 
@@ -37,15 +36,19 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private ArrayList<ProductList> mEditableList = new ArrayList<>();
     private View mOneRow;
     private int mPreviousPositon = 0;
-    FragmentCommunicator fragmentCommunicator;
+
+    AdapterViewFragmentCommunicator fragmentCommunicator;
     private LruCache<String, Bitmap> mLrucache;
+    private DatabaseAdapter mDatabaseAdapter;
+    private SQLiteDatabase mSQliteDatabase;
 
     public ProductListAdapter(LruCache<String, Bitmap> lruCache, Context mContext, ArrayList<ProductList> mProductList) {
         this.mLrucache = lruCache;
         this.mContext = mContext;
         this.mProductList = mProductList;
-        fragmentCommunicator = (FragmentCommunicator) mContext;
-
+        fragmentCommunicator = (AdapterViewFragmentCommunicator) mContext;
+        mDatabaseAdapter = new DatabaseAdapter(mContext);
+        mSQliteDatabase = mDatabaseAdapter.databaseHelper.getReadableDatabase();
     }
 
     @Override
@@ -57,43 +60,48 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
         final ProductList productListClass = mProductList.get(position);
         holder.mTextName.setText(productListClass.getmName());
-        holder.mTextCost.setText("" + productListClass.getmCost());
+        holder.mTextCost.setText(String.valueOf(productListClass.getmCost()));
         holder.mTextDesription.setText(productListClass.getmDesription());
         if(isNetworkAvailable()){
-            ImageDownloader imageDownloader = new ImageDownloader(mLrucache, productListClass.getmImage(), holder.mImage);
-            imageDownloader.execute();
+            new ImageDownloader(mLrucache, productListClass.getmImage(), holder.mImage).execute();
         }
-        else
+       else
         {
-         holder.mImage.setImageResource(R.drawable.download);
+            holder.mImage.setImageResource(R.drawable.download);
         }
 
         holder.mButtonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditFragment editFragment = new EditFragment();
+                ProductFragment editFragment = new ProductFragment();
                 mEditableList.add(productListClass);
-                fragmentCommunicator.toGoToFragment(editFragment, position, mEditableList);
+                fragmentCommunicator.onClickOfUpdateViewOfAdapter(editFragment, position, mEditableList);
             }
         });
         holder.mButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Delete Alert!");
-                builder.setMessage("Are you sure want to delete?");
+                builder.setTitle(R.string.titleOfAlertDialog);
+                builder.setMessage(R.string.messageOfAlertDialog);
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Delete opeartaion
-                        ProductList productList = mProductList.get(position);
-                        mProductList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, getItemCount());
 
-                    }
+                             int noOfRows = mDatabaseAdapter.deleteRow(mProductList.get(position),mSQliteDatabase);
+                             mProductList.remove(position);
+                                    notifyItemRemoved(position);
+                                    notifyItemRangeChanged(position, getItemCount());
+                                    if (noOfRows <= 0) {
+                                        Message.message(mContext, "Data is not Deleted");
+                                    } else {
+                                        Message.message(mContext, "Deleted Successfully");
+                                    }
+
+                             }
                 });
                 builder.setNegativeButton("No", null);
                 AlertDialog alertDialog = builder.create();
@@ -101,15 +109,16 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             }
         });
 
-        //Custome animation
+    //Custome animation
         if (position > mPreviousPositon) {
-            com.robosoft.archana.recyclerviewassignment.Modal.AnimationUtils.animatie(holder, true);
+            AnimationUtils.animatie(holder, true);
         } else {
-            com.robosoft.archana.recyclerviewassignment.Modal.AnimationUtils.animatie(holder, true);
+            AnimationUtils.animatie(holder, true);
         }
         mPreviousPositon = position;
 
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
